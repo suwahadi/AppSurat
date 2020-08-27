@@ -41,11 +41,8 @@ Kemudian akses ke: http://127.0.0.1:8000 via browser.
 # Akses Pengguna
 Untuk demo login bisa menggunakan username / password berikut:
 
-Akses Admin:
-admin / 123456
+**Akses Admin:**
+> admin / 123456
 
-Akses User Normal:
-user1 / 123456
-
-# License
-This project is licensed under the MIT License - see the [License File](LICENSE) for details.
+**Akses User Normal:**
+> user1 / 123456
