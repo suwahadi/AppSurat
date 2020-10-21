@@ -20,7 +20,7 @@
                             'files' => true
                         ]) !!}
 
-                        @include ('surat.form', ['submitButtonText' => 'UPDATE'])
+                        @include ('surat.form', ['submitButtonText' => 'UPDATE', 'nama_file' => 'nama_file'])
 
                         {!! Form::close() !!}
 
@@ -40,4 +40,3 @@
         });
     </script>
 @endsection
-

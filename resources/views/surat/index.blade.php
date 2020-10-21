@@ -45,6 +45,7 @@
                                         <th>Instansi</th>
                                         <th>Keterangan</th>
                                         <th>Tipe</th>
+                                        <th>File</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -59,6 +60,7 @@
                                         <td>{{ $item->instansi }}</td>
                                         <td>{{ $item->keterangan }}</td>
                                         <td>Surat {{ $item->tipe }}</td>
+                                        <td><a href="/files/{{ $item->file }}" target="_blank"><i aria-hidden="true" class="fa fa-file-pdf-o"></i></a></td>
                                         <td>
                                             <a href="{{ url('/surat/' . $item->id . '/edit') }}" title="Edit Surat"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                                             {!! Form::open([

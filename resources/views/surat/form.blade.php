@@ -59,6 +59,18 @@
     </div>
 </div>
 
+<div class="form-group {{ $errors->has('file') ? 'has-error' : ''}}">
+
+    {!! Form::label('file', 'File PDF', ['class' => 'col-md-4 control-label']) !!}
+    <div class="col-md-6">
+        @if (isset($nama_file))
+            <a href="files/{{ $surat->file }}"><i aria-hidden="true" class="fa fa-file-pdf-o"></i> {{ $surat->file }}</a><br><br>
+        @endif
+        {!! Form::file('file', null, ('' == '') ? ['class' => 'form-control'] : ['class' => 'form-control']) !!}
+        {!! $errors->first('file', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
         {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'SIMPAN', ['class' => 'btn btn-primary']) !!}

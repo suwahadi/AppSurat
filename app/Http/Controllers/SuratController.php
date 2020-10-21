@@ -28,6 +28,7 @@ class SuratController extends Controller
                 ->orWhere('instansi', 'LIKE', "%$keyword%")
                 ->orWhere('keterangan', 'LIKE', "%$keyword%")
                 ->orWhere('tipe', 'LIKE', "%$keyword%")
+                ->orWhere('file', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
         } else {
             $surat = Surat::paginate($perPage);
@@ -105,7 +106,8 @@ class SuratController extends Controller
             'jenis_surat_id' => 'required',
             'tanggal' => 'required',
             'tipe' => 'required',
-            'instansi' => 'required',
+            //'instansi' => 'required',
+            'file' => 'required|file|mimes:pdf|max:12048',
         ];
 
         if ($request->tipe == 'masuk') {
@@ -114,9 +116,17 @@ class SuratController extends Controller
 
         $request->validate($validation);
 
+        // Simpan file pdf START
+        $file = $request->file('file');
+        $nama_file = time()."_".str_replace(' ', '_', $file->getClientOriginalName());
+		$tujuan_upload = 'files';
+		$file->move($tujuan_upload,$nama_file);
+        // Simpan file pdf END
+
         $requestData = array_add($request->all(), 'user_id', $request->user()->id);
-        
-        Surat::create($requestData);
+
+        //Surat::create($requestData);
+        $surats = Surat::create(array('no_surat' => $request->no_surat, 'judul_surat' => $request->judul_surat, 'jenis_surat_id' => $request->jenis_surat_id, 'tanggal' => $request->tanggal, 'instansi' => $request->instansi, 'keterangan' => $request->keterangan, 'tipe' => $request->tipe, 'user_id' => $request->user()->id, 'file' => $nama_file));
 
         return redirect('surat')->with('flash_message', 'Data berhasil disimpan!');
     }
@@ -166,6 +176,7 @@ class SuratController extends Controller
             'tanggal' => 'required',
             'tipe' => 'required',
             //'instansi' => 'required',
+            'file' => 'file|mimes:pdf|max:12048',
         ];
 
         if ($request->tipe == 'masuk') {
@@ -174,12 +185,40 @@ class SuratController extends Controller
 
         $request->validate($validation);
         
-        $requestData = $request->all();
-        
-        $surat = Surat::findOrFail($id);
-        $surat->update($requestData);
+        if ($request->file) {
+           // Simpan file pdf START
+            $file = $request->file('file');
+            $nama_file = time()."_".str_replace(' ', '_', $file->getClientOriginalName());
+            $tujuan_upload = 'files';
+            $file->move($tujuan_upload,$nama_file);
+            // Simpan file pdf END
+            $surat = Surat::findOrFail($id);
+            $surat->no_surat = $request->no_surat;
+            $surat->judul_surat = $request->judul_surat;
+            $surat->jenis_surat_id = $request->jenis_surat_id;
+            $surat->tanggal = $request->tanggal;
+            $surat->instansi = $request->instansi;
+            $surat->keterangan = $request->keterangan;
+            $surat->file = $nama_file;
+            $surat->save();
+        } else {
+            $surat = Surat::findOrFail($id);
+            $surat->no_surat = $request->no_surat;
+            $surat->judul_surat = $request->judul_surat;
+            $surat->jenis_surat_id = $request->jenis_surat_id;
+            $surat->tanggal = $request->tanggal;
+            $surat->instansi = $request->instansi;
+            $surat->keterangan = $request->keterangan;
+            //$surat->file = $nama_file;
+            $surat->save();
+        }
 
-        return redirect('surat')->with('flash_message', 'Data berhasil disimpan!');
+        //$requestData = $request->all();
+        
+
+        //$surat->update($requestData);
+
+        return redirect('surat')->with('flash_message', 'Data berhasil di-update!');
     }
 
     /**

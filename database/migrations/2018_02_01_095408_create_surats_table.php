@@ -23,6 +23,7 @@ class CreateSuratsTable extends Migration
             $table->string('keterangan')->nullable();
             $table->enum('tipe', ['masuk','keluar']);
             $table->integer('user_id')->unsigned();
+            $table->string('file')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
